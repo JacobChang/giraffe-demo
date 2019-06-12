@@ -1,0 +1,16 @@
+storage: none
+source https://api.nuget.org/v3/index.json
+
+nuget Microsoft.AspNetCore.App
+nuget Microsoft.AspNetCore.WebSockets
+nuget Giraffe
+nuget Microsoft.NET.Test.Sdk
+nuget Microsoft.AspNetCore.TestHost
+nuget xunit
+nuget xunit.runner.visualstudio
+nuget Orleankka
+nuget Orleankka.Runtime
+nuget Orleankka.FSharp
+nuget Orleankka.FSharp.Runtime
+nuget Microsoft.Orleans.Server
+nuget TaskBuilder.fs

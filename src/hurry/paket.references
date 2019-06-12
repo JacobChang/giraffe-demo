@@ -1,0 +1,9 @@
+Microsoft.AspNetCore.App
+Microsoft.AspNetCore.WebSockets
+Giraffe
+Orleankka
+Orleankka.Runtime
+Orleankka.FSharp
+Orleankka.FSharp.Runtime
+Microsoft.Orleans.Server
+TaskBuilder.fs
