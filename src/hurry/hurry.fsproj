@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <Compile Include="WebSocketMiddleware.fs" />
+    <Compile Include="Channel.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 

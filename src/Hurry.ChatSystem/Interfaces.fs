@@ -5,5 +5,14 @@ module Interfaces =
     open System.Threading.Tasks
 
     type IWebSocketAgent = 
-        inherit Orleans.IGrainWithGuidKey
+        inherit Orleans.IGrainWithGuidCompoundKey
         abstract member handle : WebSocket -> Task<unit>
+
+    type IWebSocketReceiver =
+        inherit Orleans.IGrainWithGuidCompoundKey
+
+    type IWebSocketSender =
+        inherit Orleans.IGrainWithGuidCompoundKey
+
+    type IWebSocketChannel =
+        inherit Orleans.IGrainWithGuidCompoundKey

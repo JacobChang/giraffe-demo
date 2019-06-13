@@ -11,60 +11,15 @@ open Giraffe
 
 open Hurry.ChatSystem
 open WebSocketMiddleware
+open Channel
 open Orleans
-
-// ---------------------------------
-// Models
-// ---------------------------------
-
-type Message =
-    {
-        Text : string
-    }
-
-// ---------------------------------
-// Views
-// ---------------------------------
-
-module Views =
-    open GiraffeViewEngine
-
-    let layout (content: XmlNode list) =
-        html [] [
-            head [] [
-                title []  [ encodedText "hurry" ]
-                link [ _rel  "stylesheet"
-                       _type "text/css"
-                       _href "/main.css" ]
-            ]
-            body [] content
-        ]
-
-    let partial () =
-        h1 [] [ encodedText "hurry" ]
-
-    let index (model : Message) =
-        [
-            partial()
-            p [] [ encodedText model.Text ]
-        ] |> layout
-
-// ---------------------------------
-// Web app
-// ---------------------------------
-
-let indexHandler (name : string) =
-    let greetings = sprintf "Hello %s, from Giraffe!" name
-    let model     = { Text = greetings }
-    let view      = Views.index model
-    htmlView view
 
 let webApp =
     choose [
-        GET >=>
+        route "/api/v1/channels" >=>
             choose [
-                route "/" >=> indexHandler "world"
-                routef "/hello/%s" indexHandler
+                GET >=> Channel.query
+                POST >=> Channel.create
             ]
         setStatusCode 404 >=> text "Not Found" ]
 
@@ -94,6 +49,7 @@ let configureApp (app : IApplicationBuilder) =
     | false -> app.UseGiraffeErrorHandler errorHandler)
         .UseHttpsRedirection()
         .UseCors(configureCors)
+        .UseDefaultFiles()
         .UseStaticFiles()
         .UseWebSockets()
         .UseMiddleware<WebSocketMiddleware>()
