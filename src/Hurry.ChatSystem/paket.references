@@ -1,0 +1,7 @@
+Microsoft.Orleans.Client
+Microsoft.Extensions.Logging.Console
+Microsoft.Orleans.Server
+Microsoft.Orleans.OrleansCodeGenerator
+Microsoft.Orleans.Core.Abstractions
+Microsoft.Extensions.Logging.Abstractions
+TaskBuilder.fs

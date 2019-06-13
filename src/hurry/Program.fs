@@ -9,8 +9,9 @@ open Microsoft.Extensions.Logging
 open Microsoft.Extensions.DependencyInjection
 open Giraffe
 
-open ChatSystem
+open Hurry.ChatSystem
 open WebSocketMiddleware
+open Orleans
 
 // ---------------------------------
 // Models
@@ -98,13 +99,6 @@ let configureApp (app : IApplicationBuilder) =
         .UseMiddleware<WebSocketMiddleware>()
         .UseGiraffe(webApp)
 
-let configureServices (services : IServiceCollection) =
-    let chatSystem = ChatSystem.setup()
-
-    services.AddCors()    |> ignore
-    services.AddGiraffe() |> ignore
-    services.AddSingleton<ChatSystem>(chatSystem) |> ignore
-
 let configureLogging (builder : ILoggingBuilder) =
     builder.AddFilter(fun l -> l.Equals LogLevel.Error)
            .AddConsole()
@@ -112,8 +106,20 @@ let configureLogging (builder : ILoggingBuilder) =
 
 [<EntryPoint>]
 let main _ =
+    let siloHost = SiloHost.build ()
+    SiloHost.start siloHost
+
+    let chatClient = Client.build ()
+    Client.connect chatClient
+
     let contentRoot = Directory.GetCurrentDirectory()
     let webRoot     = Path.Combine(contentRoot, "WebRoot")
+
+    let configureServices (services : IServiceCollection) =
+        services.AddCors()    |> ignore
+        services.AddGiraffe() |> ignore
+        services.AddSingleton<IClusterClient>(chatClient) |> ignore
+
     WebHostBuilder()
         .UseKestrel()
         .UseContentRoot(contentRoot)
@@ -124,4 +130,9 @@ let main _ =
         .ConfigureLogging(configureLogging)
         .Build()
         .Run()
+
+    Client.close chatClient
+
+    SiloHost.stop siloHost
+
     0

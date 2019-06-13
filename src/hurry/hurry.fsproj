@@ -10,7 +10,6 @@
 
 
   <ItemGroup>
-    <Compile Include="ChatSystem.fs" />
     <Compile Include="WebSocketMiddleware.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
@@ -20,6 +19,10 @@
     <Content Include="WebRoot\**\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Hurry.ChatSystem\Hurry.ChatSystem.fsproj" />
   </ItemGroup>
 
   <Import Project="..\..\.paket\Paket.Restore.targets" />
