@@ -16,7 +16,7 @@ type WebSocketMiddleware(next : RequestDelegate) =
         | true ->
             let chatClient: IClusterClient = ctx.RequestServices.GetService(typeof<IClusterClient>) :?> IClusterClient
             let! webSocket = ctx.WebSockets.AcceptWebSocketAsync() |> Async.AwaitTask
-            let agent = chatClient.GetGrain<IWebSocketAgent> (Guid.NewGuid(), "guest")
+            let agent = chatClient.GetGrain<IWebSocketAgent> (Guid.NewGuid(), "agent")
 
             return! agent.handle webSocket
         | false ->
