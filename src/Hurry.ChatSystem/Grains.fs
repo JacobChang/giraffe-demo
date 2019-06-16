@@ -9,7 +9,6 @@ module Grains =
     open Orleans
     open Hurry.ChatSystem.Interfaces
     open System.Net.WebSockets
-    open FSharp.Control.Tasks.V2
 
     type WebSocketAgentGrain () =
         inherit Grain ()
@@ -20,20 +19,21 @@ module Grains =
         let mutable senderCancallationSource: CancellationTokenSource = null
 
         interface IWebSocketAgent with 
-            member this.handle (webSocket : WebSocket) : Task<unit> =
+            member this.handle (webSocket : WebSocket) : Task =
+                printfn "start %A" webSocket
                 let closeTask = (this :> IWebSocketAgent).handleClose currWebSocket
                 closeTask.Wait()
 
                 currWebSocket <- webSocket
                 let primaryKey = this.GetPrimaryKey()
-                let receiver = this.GrainFactory.GetGrain<IWebSocketReceiver>(primaryKey, "receiver")
-
                 receiverCancallationSource <- new CancellationTokenSource()
                 senderCancallationSource <- new CancellationTokenSource()
+
+                let receiver = this.GrainFactory.GetGrain<IWebSocketReceiver>(primaryKey, "receiver")
                 receiver.receive webSocket receiverCancallationSource.Token |> ignore
 
                 taskCompletionSource <- TaskCompletionSource()
-                taskCompletionSource.Task
+                taskCompletionSource.Task :> Task
 
             member this.handleMessage (message: string) : Task<unit> =
                 let primaryKey = this.GetPrimaryKey()
@@ -86,3 +86,33 @@ module Grains =
             member this.send (webSocket: WebSocket) (message: string) (cancellationToken: CancellationToken) =
 
                 Task.FromResult()
+
+    type Channel() =
+        inherit Grain()
+
+    type ChannelManager() =
+        inherit Grain()
+
+        let mutable channels = Map.empty
+
+        interface IChannelManager with
+            member this.create (title: string) (duration: uint32) =
+                let id = Guid.NewGuid()
+                let channel = {
+                    id = id
+                    title = title
+                    startTime = DateTime.Now
+                    duration = duration
+                }
+                channels <- Map.add id channel channels
+                Task.FromResult channel
+
+            member this.query () =
+                let result =
+                    Map.toArray channels
+                    |> Array.map snd
+                Task.FromResult result
+
+            member this.destroy (id: Guid) =
+                let channel = Map.tryFind id channels
+                Task.FromResult channel

@@ -2,20 +2,17 @@ storage: none
 source https://api.nuget.org/v3/index.json
 
 nuget Microsoft.AspNetCore.App
-nuget Microsoft.AspNetCore.WebSockets
-nuget Giraffe
-nuget Microsoft.NET.Test.Sdk
 nuget Microsoft.AspNetCore.TestHost
-nuget xunit
-nuget xunit.runner.visualstudio
-nuget Orleankka
-nuget Orleankka.Runtime
-nuget Orleankka.FSharp
-nuget Orleankka.FSharp.Runtime
-nuget Microsoft.Orleans.Client
 nuget Microsoft.Extensions.Logging.Console
+nuget Microsoft.Extensions.Logging.Abstractions
+nuget Microsoft.AspNetCore.SignalR
+nuget Microsoft.Orleans.Client
 nuget Microsoft.Orleans.Server
 nuget Microsoft.Orleans.OrleansCodeGenerator
 nuget Microsoft.Orleans.Core.Abstractions
-nuget Microsoft.Extensions.Logging.Abstractions
+nuget Giraffe
 nuget TaskBuilder.fs
+
+nuget xunit
+nuget xunit.runner.visualstudio
+nuget Microsoft.NET.Test.Sdk

@@ -3,14 +3,13 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <DebugType>portable</DebugType>
-    <AssemblyName>hurry</AssemblyName>
+    <AssemblyName>Hurry</AssemblyName>
     <OutputType>Exe</OutputType>
     <EnableDefaultContentItems>false</EnableDefaultContentItems>
   </PropertyGroup>
 
-
   <ItemGroup>
-    <Compile Include="WebSocketMiddleware.fs" />
+    <Compile Include="ChatHub.fs" />
     <Compile Include="Channel.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>

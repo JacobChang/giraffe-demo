@@ -1,9 +1,5 @@
 Microsoft.AspNetCore.App
-Microsoft.AspNetCore.WebSockets
+Microsoft.AspNetCore.SignalR
 Giraffe
-Orleankka
-Orleankka.Runtime
-Orleankka.FSharp
-Orleankka.FSharp.Runtime
 Microsoft.Orleans.Server
 TaskBuilder.fs
